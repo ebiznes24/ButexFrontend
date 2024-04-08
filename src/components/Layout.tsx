@@ -1,6 +1,7 @@
 import { Box, Container } from "@mui/material"
 import { Link, Outlet } from "react-router-dom"
 import Header from "./Header"
+import Footer from "./Footer"
 
 const Layoute: React.FC<{}> = ({ }) => {
 
@@ -30,8 +31,9 @@ const Layoute: React.FC<{}> = ({ }) => {
                     minHeight: '10vh'
                 }}
             >
-                Footer
+                <Footer/>
             </Container>
+            
         </Box>
     )
 }
