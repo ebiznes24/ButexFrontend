@@ -1,13 +1,13 @@
 import { Container } from "@mui/material"
 import { isExportDeclaration } from "typescript"
 
-const HomePage = () => {
+const ProductsPage = () => {
 
     return(
         <Container>
-            Home Page
+            Products Page
         </Container>
     )
 }
 
-export default HomePage
+export default ProductsPage
