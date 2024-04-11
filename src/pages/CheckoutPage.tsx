@@ -39,7 +39,7 @@ const theme = createTheme({
 });
 
 
-const Checkout: React.FC<{}> = ({ }) => {
+const CheckoutPage: React.FC<{}> = ({ }) => {
 
     const [activeStep, setActiveStep] = useState(0);
 
@@ -286,4 +286,4 @@ const Checkout: React.FC<{}> = ({ }) => {
     )
 }
 
-export default Checkout;
+export default CheckoutPage;
