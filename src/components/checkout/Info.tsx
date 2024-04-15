@@ -1,9 +1,9 @@
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import React from "react";
-import { ProductDTO } from "../../types/types";
+import { Product, ProductDTO } from "../../types/types";
 
 
-const Info: React.FC<{totalPrice: string, products: ProductDTO[]}> = ({totalPrice, products}) => {
+const Info: React.FC<{totalPrice: string, products: Product[]}> = ({totalPrice, products}) => {
 
     return (
         <React.Fragment>

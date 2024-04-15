@@ -10,17 +10,80 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Info from "../components/checkout/Info";
 import InfoMobile from "../components/checkout/InfoMobile";
+import { AdditionalPayment, AddressDetails, Backet, Product, ProductColor, ProductType } from "../types/types";
 
 const steps = ['Shipping address', 'Review your order', 'Payment details'];
+
+const sampleProducts: Product[] = [
+    {
+      id: 1,
+      productType: ProductType.SHOES,
+      name: "Sample Shoes 1",
+      brand: "Sample Brand",
+      price: 50,
+      size: 8,
+      color: ProductColor.RED,
+      fabric: "Sample Fabric"
+    },
+    {
+      id: 2,
+      productType: ProductType.SHOES,
+      name: "Sample Shoes 2",
+      brand: "Sample Brand",
+      price: 60,
+      size: 9,
+      color: ProductColor.BLUE,
+      fabric: "Sample Fabric"
+    },
+    {
+      id: 3,
+      productType: ProductType.SHOES,
+      name: "Sample Shoes 3",
+      brand: "Sample Brand",
+      price: 70,
+      size: 10,
+      color: ProductColor.GREEN,
+      fabric: "Sample Fabric"
+    }
+  ];
+
+  // Calculate total products price
+  const productsPrice: number = sampleProducts.reduce((total, product) => total + product.price, 0);
+
+  // Create sample address details
+  const sampleAddressDetails: AddressDetails = {
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    city: "Sample City",
+    houseNumber: "123",
+    street: "Sample Street",
+    postalCode: "12-345",
+    postalCodeCity: "Sample Postal Code City"
+  };
+
+  // Create sample additional payment
+  const sampleAdditionalPayment: AdditionalPayment = {
+    name: "Sample Payment",
+    subName: "Sample SubPayment",
+    price: 10
+  };
+
+  // Create sample basket
+  const sampleBacket: Backet = {
+    products: sampleProducts,
+    productsPrice: productsPrice,
+    additionalPayments: [sampleAdditionalPayment]
+  };
 
 function getStepContent(step: number) {
     switch (step) {
         case 0:
             return <AddressForm />;
         case 1:
-            return <PaymentForm />;
+            return <Review backet={sampleBacket} addressDetails={sampleAddressDetails}/>;
         case 2:
-            return <Review />;
+            return <PaymentForm />;
         default:
             throw new Error('Unknown step');
     }
@@ -80,7 +143,7 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                             maxWidth: 500,
                         }}
                     >
-                        <Info totalPrice={"0.00$"} products={[]} />
+                        <Info totalPrice={sampleBacket.productsPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} products={sampleBacket.products} />
                     </Box>
                 </Grid>
                 <Grid
@@ -164,7 +227,7 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                                     {activeStep >= 2 ? '$1.00' : '$0.00'}
                                 </Typography>
                             </div>
-                            <InfoMobile totalPrice={"0.00$"} products={[]} />
+                            <InfoMobile totalPrice={sampleBacket.productsPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} products={sampleBacket.products} />
                         </CardContent>
                     </Card>
 

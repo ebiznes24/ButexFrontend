@@ -4,11 +4,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { useState } from "react";
 import Info from "./Info";
-import { ProductDTO } from "../../types/types";
+import { Product, ProductDTO } from "../../types/types";
 
 
 
-const InfoMobile: React.FC<{ totalPrice: string, products: ProductDTO[] }> = ({ totalPrice, products }) => {
+const InfoMobile: React.FC<{ totalPrice: string, products: Product[] }> = ({ totalPrice, products }) => {
 
     const [open, setOpen] = useState(false);
 
