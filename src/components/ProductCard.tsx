@@ -6,15 +6,23 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { ProductDTO, ProductColor } from './../types/types'; // Import ProductDTO and ProductColor from your types file
 import shoes from './../assets/but.png';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: ProductDTO;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+
+  const navigate = useNavigate();
+
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
+      <CardActionArea
+      onClick={() => {
+        navigate(`/butex/item/${product.id}`);
+      }}
+      >
         <CardMedia
           component="img"
           height="140"

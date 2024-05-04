@@ -15,7 +15,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 const pages = [
     { title: 'Products', path: '/' },
-    { title: 'Item', path: '/item' },
     { title: 'Info', path: '/info' }
 ];
 const settings = [{title: 'Basket', path: '/basket'}];
@@ -49,7 +48,7 @@ const Header = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="#"
+                        href="/butex"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -106,7 +105,7 @@ const Header = () => {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="butex"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },

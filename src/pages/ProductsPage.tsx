@@ -1,31 +1,7 @@
 import { Container, Grid } from "@mui/material"
 import { isExportDeclaration } from "typescript"
 import ProductCard from "../components/ProductCard";
-
-
-// Define ProductType enum
-enum ProductType {
-    SHOES = "Shoes"
-}
-
-// Define ProductColor enum
-enum ProductColor {
-    RED = "Red",
-    BLUE = "Blue",
-    GREEN = "Green"
-}
-
-// Define interface for ProductDTO
-interface ProductDTO {
-    id: number;
-    productType: ProductType;
-    name: string;
-    brand: string;
-    price: number;
-    sizes: number[];
-    colors: ProductColor[];
-    fabric: string;
-}
+import { ProductDTO, ProductType, ProductColor } from "../types/types";
 
 const ProductsPage = () => {
 

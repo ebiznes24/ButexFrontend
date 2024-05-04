@@ -13,6 +13,7 @@ function App() {
       <Route element={<Layoute/>}>
         <Route path='/' element={<ProductsPage/>} />
         <Route path='/item' element={<ItemPage/>} />
+        <Route path='/item/:id' element={<ItemPage/>} />
         <Route path='/info' element={<InfoPage/>} />
         <Route path='/basket' element={<BasketPage/>} />
         <Route path='/checkout' element={<CheckoutPage/>} />

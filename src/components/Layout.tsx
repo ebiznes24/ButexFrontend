@@ -19,7 +19,9 @@ const Layoute: React.FC<{}> = ({ }) => {
             </Container>
             <Container
                 sx={{
-                    minHeight: '80vh'
+                    minHeight: '80vh',
+                    margin: '1em auto',
+                    display: 'flex',
                 }}
             >
                 <Outlet />
