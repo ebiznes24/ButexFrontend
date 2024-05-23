@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import React from "react";
-import { Product, ProductDTO } from "../../types/types";
+import { Product } from "../../types/types";
 
 
 const Info: React.FC<{totalPrice: string, products: Product[]}> = ({totalPrice, products}) => {

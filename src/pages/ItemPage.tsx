@@ -1,26 +1,32 @@
 import { Box, Container, Grid } from "@mui/material"
 import { useParams } from "react-router-dom";
 import { isExportDeclaration } from "typescript"
-import { Product, ProductColor, ProductDTO, ProductType } from "../types/types";
+import { Product } from "../types/types";
 import CardItemImage from "../components/item/CardItemImage";
 import ItemInfoDetails from "../components/item/ItemInfoDetails";
+import { useEffect, useState } from "react";
+import { publicHook } from "../hooks/PublicHook";
 
-const ItemPage = ({}) => {
+const ItemPage = ({ }) => {
 
     const { id } = useParams();
 
-    console.log(id);
+    const [product, setProduct] = useState<Product | undefined>(undefined);
 
-    const product: ProductDTO = {
-        id: 1,
-        productType: ProductType.SHOES,
-        name: 'Classic Leather Sneakers',
-        brand: 'XYZ Footwear',
-        price: 99.99,
-        sizes: [7, 8, 9, 10, 11],
-        colors: [ProductColor.BLUE, ProductColor.GREEN],
-        fabric: 'Leather',
-    }
+    useEffect(() => {
+        const fetchProducts = async () => {
+            publicHook.get(
+                `/product/${id}`
+            ).then(response => {
+                setProduct(response.data);
+            }).catch(error => {
+                console.error('Error fetching products:', error);
+                setProduct(undefined);
+            });
+        };
+
+        fetchProducts();
+    }, []);
 
     return (
         <Grid
@@ -45,9 +51,10 @@ const ItemPage = ({}) => {
                 }}
             // maxHeight={80}
             >
-                <CardItemImage
-                    product={product}
-                />
+                {
+                    product && <CardItemImage product={product} />
+                }
+
             </Grid>
             <Grid
                 item
@@ -63,7 +70,9 @@ const ItemPage = ({}) => {
                     gap: 2,
                 }}
             >
-                <ItemInfoDetails product={product} />
+                {
+                    product && <ItemInfoDetails product={product} />
+                }
             </Grid>
 
         </Grid>

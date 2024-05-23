@@ -1,8 +1,8 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material"
 import shoe from './../../assets/but.png'
-import { ProductDTO } from "../../types/types"
+import { Product } from "../../types/types"
 
-const CardItemImage: React.FC<{product: ProductDTO}> = ({product}) => {
+const CardItemImage: React.FC<{product: Product}> = ({product}) => {
 
 
     return (

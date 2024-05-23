@@ -1,6 +1,6 @@
 import { Divider, Grid, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 import React from "react";
-import { AdditionalPayment, AddressDetails, Backet, Product, ProductDTO } from "../../types/types";
+import { AdditionalPayment, AddressDetails, Backet } from "../../types/types";
 
 
 const Review: React.FC<{ backet: Backet, addressDetails: AddressDetails }> = ({ backet, addressDetails }) => {

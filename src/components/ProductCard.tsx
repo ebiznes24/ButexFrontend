@@ -4,12 +4,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import { ProductDTO, ProductColor } from './../types/types'; // Import ProductDTO and ProductColor from your types file
+import { Product } from './../types/types';
 import shoes from './../assets/but.png';
 import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
-  product: ProductDTO;
+  product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {

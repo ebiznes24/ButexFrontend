@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { useState } from "react";
 import Info from "./Info";
-import { Product, ProductDTO } from "../../types/types";
+import { Product } from "../../types/types";
 
 
 

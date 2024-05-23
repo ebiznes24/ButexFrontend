@@ -1,23 +1,32 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { ProductColor, ProductDTO } from "../../types/types";
-import { useState } from "react";
+import { Product } from "../../types/types";
+import { useState, useContext } from "react";
 
-const ItemInfoDetails: React.FC<{ product: ProductDTO }> = ({ product }) => {
-    const [selectedSize, setSelectedSize] = useState<number | ''>('');
-    const [selectedColor, setSelectedColor] = useState<ProductColor | ''>('');
+const ItemInfoDetails: React.FC<{ product: Product }> = ({ product }) => {
 
-    const handleSizeChange = (event: SelectChangeEvent<number | ''>) => {
-        setSelectedSize(event.target.value === '' ? '' : parseInt(event.target.value as string, 10));
-    };
+  const [selectedSize, setSelectedSize] = useState<number | ''>('');
+  const [selectedColor, setSelectedColor] = useState<string>('');
 
-    const handleColorChange = (event: SelectChangeEvent<ProductColor | ''>) => {
-        setSelectedColor(event.target.value as ProductColor | '');
-    };
+  const handleSizeChange = (event: SelectChangeEvent<number | ''>) => {
+    setSelectedSize(event.target.value === '' ? '' : parseInt(event.target.value as string, 10));
+};
 
-    const handleAddToBucket = () => {
-        // Implement your logic for adding the product to the bucket here
-        console.log("Product added to bucket:", product);
-    };
+const handleColorChange = (event: SelectChangeEvent<string | ''>) => {
+    setSelectedColor(event.target.value as string | '');
+};
+
+  const handleAddToBucket = () => {
+    if (selectedSize && selectedColor) {
+      const bucketProduct = {
+        ...product,
+        selectedSize: selectedSize as number,
+        selectedColor
+      };
+      console.log('succesfully added to bucket <3');
+    } else {
+      alert('Please select both size and color.');
+    }
+  };
 
     return (
         <Box height={'100%'}>
@@ -32,11 +41,11 @@ const ItemInfoDetails: React.FC<{ product: ProductDTO }> = ({ product }) => {
             >
                 <InputLabel id="size-label">Select Size</InputLabel>
                 <Select
-                    labelId="size-label"
-                    id="size"
-                    value={selectedSize}
-                    onChange={handleSizeChange}
-                >
+                        labelId="size-label"
+                        id="size"
+                        value={selectedSize}
+                        onChange={handleSizeChange}
+                    >
                     <MenuItem value="">
                         <em>Select size</em>
                     </MenuItem>

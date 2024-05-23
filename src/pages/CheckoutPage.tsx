@@ -4,45 +4,43 @@ import PaymentForm from "../components/checkout/PaymentForm";
 import Review from "../components/checkout/Review";
 import { Box, Button, Card, CardContent, Grid, InputBase, OutlinedInput, Stack, Step, StepLabel, Stepper, ThemeProvider, Typography, createMuiTheme, createTheme } from "@mui/material";
 
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Info from "../components/checkout/Info";
 import InfoMobile from "../components/checkout/InfoMobile";
-import { AdditionalPayment, AddressDetails, Backet, Product, ProductColor, ProductType } from "../types/types";
+import { AdditionalPayment, AddressDetails, Backet, Product } from "../types/types";
 
 const steps = ['Shipping address', 'Review your order', 'Payment details'];
 
 const sampleProducts: Product[] = [
     {
       id: 1,
-      productType: ProductType.SHOES,
+      productType: 'ProductType.SHOES',
       name: "Sample Shoes 1",
       brand: "Sample Brand",
       price: 50,
-      size: 8,
-      color: ProductColor.RED,
+      sizes: [8],
+      colors: ['ProductColor.RED'],
       fabric: "Sample Fabric"
     },
     {
       id: 2,
-      productType: ProductType.SHOES,
+      productType: 'ProductType.SHOES',
       name: "Sample Shoes 2",
       brand: "Sample Brand",
       price: 60,
-      size: 9,
-      color: ProductColor.BLUE,
+      sizes: [9],
+      colors: ['ProductColor.BLUE'],
       fabric: "Sample Fabric"
     },
     {
       id: 3,
-      productType: ProductType.SHOES,
+      productType: 'ProductType.SHOES',
       name: "Sample Shoes 3",
       brand: "Sample Brand",
       price: 70,
-      size: 10,
-      color: ProductColor.GREEN,
+      sizes: [10],
+      colors: ['ProductColor.GREEN'],
       fabric: "Sample Fabric"
     }
   ];

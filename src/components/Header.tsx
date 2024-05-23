@@ -13,6 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
+import logo from './../assets/logo.png';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+
 const pages = [
     { title: 'Products', path: '/' },
     { title: 'Info', path: '/info' }
@@ -43,7 +46,12 @@ const Header = () => {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+
+                    {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+
+                    <Avatar src={logo} alt="Logo" sx={{ display: { xs: 'none', md: 'flex' }, marginRight: 1 }} />
+
+
                     <Typography
                         variant="h6"
                         noWrap
@@ -59,7 +67,7 @@ const Header = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        BUTEX
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -71,7 +79,7 @@ const Header = () => {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            <MenuIcon />
+                            <AccountBoxIcon />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -100,7 +108,7 @@ const Header = () => {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                    <Avatar src={logo} alt="Logo" sx={{ display: { xs: 'flex', md: 'none' }, marginRight: 1 }} />
                     <Typography
                         variant="h5"
                         noWrap
@@ -117,7 +125,7 @@ const Header = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        BUTEX
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
@@ -136,7 +144,8 @@ const Header = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                                <AccountBoxIcon />
                             </IconButton>
                         </Tooltip>
                         <Menu
