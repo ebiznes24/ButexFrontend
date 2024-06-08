@@ -1,13 +1,3 @@
-export interface AddressDetails {
-  firstName: string,
-  lastName: string,
-  email: string,
-  city: string,
-  houseNumber: string,
-  street: string | undefined,
-  postalCode: string,
-  postalCodeCity: string,
-}
 
 export interface Product {
   id: number;
@@ -18,6 +8,17 @@ export interface Product {
   sizes: number[];
   colors: string[];
   fabric: string;
+}
+
+export interface AddressDetails {
+  firstName: string,
+  lastName: string,
+  email: string,
+  city: string,
+  houseNumber: string,
+  street: string | undefined,
+  postalCode: string,
+  postalCodeCity: string,
 }
 
 export interface AdditionalPayment {
@@ -42,7 +43,7 @@ export interface ShoppingBasket {
 }
 
 export interface UserData {
-  shopingBasket: ShopingBusketProduct,
+  shopingBasket: ShoppingBasket,
   additionalPayment: AdditionalPayment[],
   userInfo: AddressDetails,
 }

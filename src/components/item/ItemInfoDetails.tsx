@@ -1,32 +1,49 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Product } from "../../types/types";
 import { useState, useContext } from "react";
+import { useUserData } from "../../contex/UserDataContex";
+import { useNotification } from "../../contex/notificationContex";
 
 const ItemInfoDetails: React.FC<{ product: Product }> = ({ product }) => {
 
-  const [selectedSize, setSelectedSize] = useState<number | ''>('');
-  const [selectedColor, setSelectedColor] = useState<string>('');
+    const [selectedSize, setSelectedSize] = useState<number | ''>('');
+    const [selectedColor, setSelectedColor] = useState<string>('');
+    const { addProduct, getAllProducts } = useUserData();
+    const { showNotification } = useNotification();
 
-  const handleSizeChange = (event: SelectChangeEvent<number | ''>) => {
-    setSelectedSize(event.target.value === '' ? '' : parseInt(event.target.value as string, 10));
-};
+    const handleSizeChange = (event: SelectChangeEvent<number | ''>) => {
+        setSelectedSize(event.target.value === '' ? '' : parseInt(event.target.value as string, 10));
+    };
 
-const handleColorChange = (event: SelectChangeEvent<string | ''>) => {
-    setSelectedColor(event.target.value as string | '');
-};
+    const handleColorChange = (event: SelectChangeEvent<string | ''>) => {
+        setSelectedColor(event.target.value as string | '');
+    };
 
-  const handleAddToBucket = () => {
-    if (selectedSize && selectedColor) {
-      const bucketProduct = {
-        ...product,
-        selectedSize: selectedSize as number,
-        selectedColor
-      };
-      console.log('succesfully added to bucket <3');
-    } else {
-      alert('Please select both size and color.');
-    }
-  };
+    const handleAddToBucket = () => {
+        if (selectedSize && selectedColor) {
+            const bucketProduct = {
+                ...product,
+                selectedSize: selectedSize as number,
+                selectedColor
+            };
+            addProduct({
+                id: product.id,
+                productType: product.productType,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                sizes: selectedSize,
+                colors: selectedColor,
+                fabric: product.fabric
+            });
+            setSelectedColor('');
+            setSelectedSize('');
+            showNotification('Succesfully added shoe', 'success');
+        } else {
+            // alert('Please select both size and color.');
+            showNotification('Please select both size and color.', 'warning');
+        }
+    };
 
     return (
         <Box height={'100%'}>
@@ -35,17 +52,17 @@ const handleColorChange = (event: SelectChangeEvent<string | ''>) => {
             <p>Price: ${product.price.toFixed(2)}</p>
 
             <FormControl fullWidth
-            sx={{
-                margin: '0.5rem 0rem',
-            }}
+                sx={{
+                    margin: '0.5rem 0rem',
+                }}
             >
                 <InputLabel id="size-label">Select Size</InputLabel>
                 <Select
-                        labelId="size-label"
-                        id="size"
-                        value={selectedSize}
-                        onChange={handleSizeChange}
-                    >
+                    labelId="size-label"
+                    id="size"
+                    value={selectedSize}
+                    onChange={handleSizeChange}
+                >
                     <MenuItem value="">
                         <em>Select size</em>
                     </MenuItem>
@@ -56,10 +73,10 @@ const handleColorChange = (event: SelectChangeEvent<string | ''>) => {
             </FormControl>
 
             <FormControl fullWidth
-            
-            sx={{
-                margin: '0.5rem 0rem',
-            }}
+
+                sx={{
+                    margin: '0.5rem 0rem',
+                }}
             >
                 <InputLabel id="color-label">Select Color</InputLabel>
                 <Select

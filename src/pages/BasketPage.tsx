@@ -1,16 +1,17 @@
 import { Button, Container } from "@mui/material"
 import { isExportDeclaration } from "typescript"
+import BasketView from "../components/BasketView"
 
 const BasketPage = () => {
 
     return(
         <Container>
-            Basket Page
-            <Button
+            <BasketView/>
+            {/* <Button
                 href={`/butex/checkout`}
             >
                 Checkout
-            </Button>
+            </Button> */}
         </Container>
     )
 }

@@ -2,6 +2,7 @@ import { Box, Container } from "@mui/material"
 import { Link, Outlet } from "react-router-dom"
 import Header from "./Header"
 import Footer from "./Footer"
+import { NotificationSnackBar } from "./NotificationSnackBar"
 
 const Layoute: React.FC<{}> = ({ }) => {
 
@@ -35,7 +36,7 @@ const Layoute: React.FC<{}> = ({ }) => {
             >
                 <Footer/>
             </Container>
-            
+            <NotificationSnackBar/>
         </Box>
     )
 }
