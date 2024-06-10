@@ -27,6 +27,8 @@ export const UserDataProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
     const storedData = localStorage.getItem('userData');
     if (storedData) {
       const parsedData: UserData = JSON.parse(storedData);
+      parsedData.additionalPayment = [
+      ]
       setUserData(parsedData);
     }
   }, []);

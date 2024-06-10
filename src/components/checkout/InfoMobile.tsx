@@ -5,12 +5,16 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { useState } from "react";
 import Info from "./Info";
 import { Product } from "../../types/types";
+import { useUserData } from "../../contex/UserDataContex";
 
 
 
-const InfoMobile: React.FC<{ totalPrice: string, products: Product[] }> = ({ totalPrice, products }) => {
+const InfoMobile: React.FC = () => {
 
     const [open, setOpen] = useState(false);
+    const {userData} = useUserData();
+    const productsPrice: number|undefined = userData?.shopingBasket.products.reduce((total, product) => total + product.price, 0);
+    const totalPrice = productsPrice?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -23,7 +27,7 @@ const InfoMobile: React.FC<{ totalPrice: string, products: Product[] }> = ({ tot
             >
                 <CloseIcon />
             </IconButton>
-            <Info totalPrice={totalPrice} products={products} />
+            <Info/>
         </Box>
     );
 

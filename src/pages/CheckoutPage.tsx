@@ -8,84 +8,10 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Info from "../components/checkout/Info";
 import InfoMobile from "../components/checkout/InfoMobile";
-import { AdditionalPayment, AddressDetails, Backet, Product } from "../types/types";
-
-const steps = ['Shipping address', 'Review your order', 'Payment details'];
-
-const sampleProducts: Product[] = [
-    {
-      id: 1,
-      productType: 'ProductType.SHOES',
-      name: "Sample Shoes 1",
-      brand: "Sample Brand",
-      price: 50,
-      sizes: [8],
-      colors: ['ProductColor.RED'],
-      fabric: "Sample Fabric"
-    },
-    {
-      id: 2,
-      productType: 'ProductType.SHOES',
-      name: "Sample Shoes 2",
-      brand: "Sample Brand",
-      price: 60,
-      sizes: [9],
-      colors: ['ProductColor.BLUE'],
-      fabric: "Sample Fabric"
-    },
-    {
-      id: 3,
-      productType: 'ProductType.SHOES',
-      name: "Sample Shoes 3",
-      brand: "Sample Brand",
-      price: 70,
-      sizes: [10],
-      colors: ['ProductColor.GREEN'],
-      fabric: "Sample Fabric"
-    }
-  ];
-
-  // Calculate total products price
-  const productsPrice: number = sampleProducts.reduce((total, product) => total + product.price, 0);
-
-  // Create sample address details
-  const sampleAddressDetails: AddressDetails = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    city: "Sample City",
-    houseNumber: "123",
-    street: "Sample Street",
-    postalCode: "12-345",
-    postalCodeCity: "Sample Postal Code City"
-  };
-
-  // Create sample additional payment
-  const sampleAdditionalPayment: AdditionalPayment = {
-    name: "Sample Payment",
-    subName: "Sample SubPayment",
-    price: 10
-  };
-
-  // Create sample basket
-  const sampleBacket: Backet = {
-    products: sampleProducts,
-    productsPrice: productsPrice,
-    additionalPayments: [sampleAdditionalPayment]
-  };
-
-function getStepContent(step: number) {
-    switch (step) {
-        case 0:
-            return <AddressForm />;
-        case 1:
-            return <Review backet={sampleBacket} addressDetails={sampleAddressDetails}/>;
-        case 2:
-            return <PaymentForm />;
-        default:
-            throw new Error('Unknown step');
-    }
-}
+import { AdditionalPayment, AddressDetails, ShopingBusketProduct } from "../types/types";
+import { useUserData } from "../contex/UserDataContex";
+import { publicHook } from "../hooks/PublicHook";
+import { useNotification } from "../contex/notificationContex";
 
 const theme = createTheme({
     components: {
@@ -101,6 +27,174 @@ const theme = createTheme({
 
 
 const CheckoutPage: React.FC<{}> = ({ }) => {
+    const { userData, clearBasket, getAllProducts } = useUserData();
+
+    const productsPrice: number | undefined = userData?.shopingBasket.products.reduce((total, product) => total + product.price, 0);
+    const totalPrice = productsPrice?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const additionalPayments = userData?.additionalPayment.reduce((acc, item: AdditionalPayment) => acc + item.price, 0);
+    const totalPriceAdditionalPayments = additionalPayments?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    let allPayments = 0.00;
+    if (productsPrice && additionalPayments) {
+        allPayments = productsPrice + additionalPayments;
+    }
+    const totalAllPayments = allPayments.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const [addressDetails, setAddressDetails] = useState<AddressDetails>({
+        firstName: 'Jan',
+        lastName: 'Kowalski',
+        email: 'wojtek34566@gmail.com',
+        city: 'Zgierz',
+        houseNumber: '6',
+        street: 'Przykładowa ',
+        postalCode: '98-100',
+        phoneNumber: '537855316',
+        service: 'INPOST',
+    });
+
+    const [errorFrom, setErrorFrom] = useState<AddressDetails>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        city: '',
+        houseNumber: '',
+        street: '',
+        postalCode: '',
+        phoneNumber: '',
+        service: '',
+    });
+    const validateAddressForm = () => {
+        const { firstName, lastName, email, city, houseNumber, street, postalCode, phoneNumber, service } = addressDetails;
+        console.log(addressDetails)
+        setErrorFrom({
+            firstName: !firstName ? 'First name is required' : '',
+            lastName: !lastName ? 'Last name is required' : '',
+            email: !email ? 'Email is required' : '',
+            city: !city ? 'City is required' : '',
+            houseNumber: !houseNumber ? 'House number is required' : '',
+            street: !street ? 'Street is required' : '',
+            postalCode: !postalCode ? 'Postal code is required' : '',
+            phoneNumber: !phoneNumber ? 'State is required' : '',
+            service: !service ? 'Service is required' : '',
+        });
+        if (firstName === '' || lastName === '' || email === '' || city === '' || street === '' || houseNumber === '' || postalCode === '' || phoneNumber === '' || service === '') {
+            return false;
+        }
+        return Object.values(errorFrom).every(error => error === '');
+    };
+
+    let OrderID: number | undefined = undefined;
+    const [orderId, setOrderId] = useState<number | undefined>(undefined);
+    const [paymentID, setPaymentID] = useState<string>('');
+    const { showNotification } = useNotification();
+
+    interface Steps {
+        name: string;
+        buttonName: string;
+        onSubmit: () => boolean;
+        elementToDisplay: JSX.Element;
+    }
+    const steps_1: Steps[] = [
+        {
+            name: "Shipping address",
+            buttonName: "Next",
+            onSubmit: function (): boolean {
+                const formIsValid = validateAddressForm();
+                if (!formIsValid) {
+                    return false;
+                }
+                handleNext();
+                return true;
+            },
+            elementToDisplay: <AddressForm addressDetails={addressDetails} setAddressDetails={setAddressDetails} errorForm={errorFrom} />,
+        },
+        {
+            name: "Review your order",
+            buttonName: "Next",
+            onSubmit: function (): boolean {
+                //wysłanie zapytania jeśli tak to 
+                const products: { productId: number, quantity: number }[] = [];
+                getAllProducts().map((product: ShopingBusketProduct) => {
+                    // Find the product in the data array
+                    const existingProduct = products.find(p => p.productId === product.id);
+
+                    if (existingProduct) {
+                        existingProduct.quantity += 1;
+                    } else {
+                        products.push({
+                            productId: product.id,
+                            quantity: 1,
+                        });
+                    }
+                });
+                const orderDTO = {
+                    "products": products,
+                    "name": addressDetails.firstName + " " + addressDetails.lastName,
+                    "street": addressDetails.street + " " + addressDetails.houseNumber,
+                    "postcode": addressDetails.postalCode,
+                    "city": addressDetails.city,
+                    "email": addressDetails.email,
+                    "phoneNumber": addressDetails.phoneNumber,
+                    "service": addressDetails.service
+                }
+                console.log(orderDTO);
+                console.log(products);
+                publicHook.post('/order', {
+                    ...orderDTO
+                }).then(response => {
+                    setOrderId(response.data.id);
+                    handleNext();
+                }).catch(error => {
+                    showNotification('Sth went wrong check address details, products', 'warning');
+                });
+
+                return true;
+            },
+            elementToDisplay: <Review addressDetails={addressDetails} />,
+        },
+        {
+            name: "Payment details",
+            buttonName: "Pay",
+            onSubmit: function (): boolean {
+                console.log('orderID: ' + orderId);
+                //post  and redirect to url
+                publicHook.post('/payment', null, {
+                    params: {
+                        "orderId": orderId
+                    }
+                }).then(response => {
+                    console.log(response);
+                    setPaymentID(response.data.paymentId);
+
+                    // Extract the redirectUrl from the response
+                    const redirectUrl = response.data.redirectUrl;
+
+                    // Open the redirectUrl in a new tab
+                    if (redirectUrl) {
+                        window.open(redirectUrl, '_blank');
+                        handleNext();
+                        clearBasket();
+                    } else {
+                        showNotification('Redirect URL is missing', 'error');
+                    }
+                }).catch(error => {
+                    showNotification('coś poszło nie tak', 'error');
+                });
+
+
+                return true;
+            },
+            elementToDisplay: <PaymentForm />,
+        },
+    ];
+    const steps = ['Shipping address', 'Review your order', 'Payment details'];
+    function getStepContent(step: number) {
+        if (step < 0 || step > steps_1.length) {
+            throw new Error('Unknown step');
+        }
+        return steps_1[step].elementToDisplay;
+    }
 
     const [activeStep, setActiveStep] = useState(0);
 
@@ -115,6 +209,7 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
     return (
         <ThemeProvider theme={theme}>
             <Grid container sx={{ minHeight: { xs: '100%', sm: '80dvh' } }}>
+                {/* INFO */}
                 <Grid
                     item
                     xs={12}
@@ -141,7 +236,7 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                             maxWidth: 500,
                         }}
                     >
-                        <Info totalPrice={sampleBacket.productsPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} products={sampleBacket.products} />
+                        <Info />
                     </Box>
                 </Grid>
                 <Grid
@@ -188,15 +283,15 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                                     height: 40,
                                 }}
                             >
-                                {steps.map((label) => (
+                                {steps_1.map((step) => (
                                     <Step
                                         sx={{
-                                            ':first-child': { pl: 0 },
+                                            ':first-of-type': { pl: 0 },
                                             ':last-child': { pr: 0 },
                                         }}
-                                        key={label}
+                                        key={step.name}
                                     >
-                                        <StepLabel>{label}</StepLabel>
+                                        <StepLabel>{step.name}</StepLabel>
                                     </Step>
                                 ))}
                             </Stepper>
@@ -222,10 +317,10 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                                     Selected products
                                 </Typography>
                                 <Typography variant="body1">
-                                    {activeStep >= 2 ? '$1.00' : '$0.00'}
+                                    {activeStep >= 2 ? totalAllPayments : totalPrice}
                                 </Typography>
                             </div>
-                            <InfoMobile totalPrice={sampleBacket.productsPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} products={sampleBacket.products} />
+                            <InfoMobile />
                         </CardContent>
                     </Card>
 
@@ -246,31 +341,31 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                             alternativeLabel
                             sx={{ display: { sm: 'flex', md: 'none' } }}
                         >
-                            {steps.map((label) => (
+                            {steps_1.map((step) => (
                                 <Step
                                     sx={{
-                                        ':first-child': { pl: 0 },
+                                        ':first-of-type': { pl: 0 },
                                         ':last-child': { pr: 0 },
                                         '& .MuiStepConnector-root': { top: { xs: 6, sm: 12 } },
                                     }}
-                                    key={label}
+                                    key={step.name}
                                 >
                                     <StepLabel
                                         sx={{ '.MuiStepLabel-labelContainer': { maxWidth: '70px' } }}
                                     >
-                                        {label}
+                                        {step.name}
                                     </StepLabel>
                                 </Step>
                             ))}
                         </Stepper>
                         {/* Tutaj dzieje sie magia  */}
-                        {activeStep === steps.length ? (
+                        {activeStep === steps_1.length ? (
                             <Stack spacing={2} useFlexGap>
                                 <Typography variant="h1">📦</Typography>
                                 <Typography variant="h5">Thank you for your order!</Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    Your order number is
-                                    <strong>&nbsp;#140396</strong>. We have emailed your order
+                                    Your payment number is
+                                    <strong>&nbsp;{paymentID}</strong>. We have emailed your order
                                     confirmation and will update you once its shipped.
                                 </Typography>
                                 <Button
@@ -285,7 +380,9 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                             </Stack>
                         ) : (
                             <Fragment>
-                                {getStepContent(activeStep)}
+                                {
+                                    getStepContent(activeStep)
+                                }
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -297,8 +394,6 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                                         pb: { xs: 12, sm: 0 },
                                         mt: { xs: 2, sm: 0 },
                                         mb: '60px',
-                                        // backgroundColor: 'red',
-                                        // margin: '0',
 
                                     }}
                                 >
@@ -330,12 +425,13 @@ const CheckoutPage: React.FC<{}> = ({ }) => {
                                     <Button
                                         variant="contained"
                                         endIcon={<ChevronRightRoundedIcon />}
-                                        onClick={handleNext}
+                                        onClick={steps_1[activeStep].onSubmit}
                                         sx={{
                                             width: { xs: '100%', sm: 'fit-content' },
                                         }}
+                                    // disabled={activeStep===0 && !isValid}
                                     >
-                                        {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                        {steps_1[activeStep].buttonName}
                                     </Button>
                                 </Box>
                             </Fragment>

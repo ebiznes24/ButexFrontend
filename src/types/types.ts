@@ -18,7 +18,8 @@ export interface AddressDetails {
   houseNumber: string,
   street: string | undefined,
   postalCode: string,
-  postalCodeCity: string,
+  phoneNumber: string,
+  service: string,
 }
 
 export interface AdditionalPayment {

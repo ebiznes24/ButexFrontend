@@ -1,65 +1,85 @@
 import Checkbox from '@mui/material/Checkbox';
-import { FormControlLabel, FormLabel, Grid, OutlinedInput } from "@mui/material";
+import { FormControlLabel, FormHelperText, FormLabel, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { styled } from '@mui/system';
+import { AddressDetails } from '../../types/types';
+import { useEffect, useState } from 'react';
 
 const FormGrid = styled(Grid)(() => ({
     display: 'flex',
     flexDirection: 'column',
-  }));
+}));
 
-const AddressForm: React.FC<{}> = ({ }) => {
+const AddressForm: React.FC<{ addressDetails: AddressDetails, setAddressDetails: React.Dispatch<React.SetStateAction<AddressDetails>>, errorForm: AddressDetails }> = ({ addressDetails, setAddressDetails, errorForm }) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setAddressDetails({ ...addressDetails, [name]: value });
+    };
 
     return (
         <Grid container spacing={2}>
             <FormGrid item xs={12} md={6}>
-                <FormLabel htmlFor="first-name" required>
+                <FormLabel htmlFor="firstName" required>
                     First name
                 </FormLabel>
                 <OutlinedInput
-                    id="first-name"
-                    name="first-name"
-                    type="name"
+                    id="firstName"
+                    name="firstName"
                     placeholder="John"
                     autoComplete="first name"
+                    type="name"
+                    value={addressDetails.firstName}
+                    onChange={handleChange}
+                    error={!!errorForm.firstName}
                     required
                 />
+                {!!errorForm.firstName && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.firstName}
+                    </FormHelperText>
+                )}
             </FormGrid>
             <FormGrid item xs={12} md={6}>
-                <FormLabel htmlFor="last-name" required>
+                <FormLabel htmlFor="lastName" required>
                     Last name
                 </FormLabel>
                 <OutlinedInput
-                    id="last-name"
-                    name="last-name"
-                    type="last-name"
+                    id="lastName"
+                    name="lastName"
+                    type="lastName"
+                    value={addressDetails.lastName}
                     placeholder="Snow"
                     autoComplete="last name"
+                    onChange={handleChange}
+                    error={!!errorForm.lastName}
                     required
                 />
+                {!!errorForm.lastName && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.lastName}
+                    </FormHelperText>
+                )}
             </FormGrid>
             <FormGrid item xs={12}>
-                <FormLabel htmlFor="address1" required>
-                    Address line 1
+                <FormLabel htmlFor="email" required>
+                    Email
                 </FormLabel>
                 <OutlinedInput
-                    id="address1"
-                    name="address1"
-                    type="address1"
-                    placeholder="Street name and number"
-                    autoComplete="shipping address-line1"
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    autoComplete="email"
+                    value={addressDetails.email}
+                    onChange={handleChange}
+                    error={!!errorForm.email}
                     required
                 />
-            </FormGrid>
-            <FormGrid item xs={12}>
-                <FormLabel htmlFor="address2">Address line 2</FormLabel>
-                <OutlinedInput
-                    id="address2"
-                    name="address2"
-                    type="address2"
-                    placeholder="Apartment, suite, unit, etc. (optional)"
-                    autoComplete="shipping address-line2"
-                    required
-                />
+                {!!errorForm.email && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.email}
+                    </FormHelperText>
+                )}
             </FormGrid>
             <FormGrid item xs={6}>
                 <FormLabel htmlFor="city" required>
@@ -69,55 +89,121 @@ const AddressForm: React.FC<{}> = ({ }) => {
                     id="city"
                     name="city"
                     type="city"
-                    placeholder="New York"
+                    placeholder="Łódz"
                     autoComplete="City"
+                    value={addressDetails.city}
+                    onChange={handleChange}
+                    error={!!errorForm.city}
                     required
                 />
+                {!!errorForm.city && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.city}
+                    </FormHelperText>
+                )}
             </FormGrid>
             <FormGrid item xs={6}>
-                <FormLabel htmlFor="state" required>
-                    State
+                <FormLabel htmlFor="phoneNumber" required>
+                    Phone Number
                 </FormLabel>
                 <OutlinedInput
-                    id="state"
-                    name="state"
-                    type="state"
-                    placeholder="NY"
-                    autoComplete="State"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    type="phone"
+                    placeholder="123456789"
+                    autoComplete="Phone"
+                    value={addressDetails.phoneNumber}
+                    onChange={handleChange}
+                    error={!!errorForm.phoneNumber}
                     required
                 />
+                {!!errorForm.phoneNumber && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.phoneNumber}
+                    </FormHelperText>
+                )}
+            </FormGrid>
+            <FormGrid item xs={12}>
+                <FormLabel htmlFor="street" required>
+                    Street
+                </FormLabel>
+                <OutlinedInput
+                    id="street"
+                    name="street"
+                    type="street"
+                    placeholder="street"
+                    autoComplete="street"
+                    value={addressDetails.street}
+                    onChange={handleChange}
+                    error={!!errorForm.street}
+                    required
+                />
+                {!!errorForm.street && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.street}
+                    </FormHelperText>
+                )}
             </FormGrid>
             <FormGrid item xs={6}>
-                <FormLabel htmlFor="zip" required>
+                <FormLabel htmlFor="postalCode" required>
                     Zip / Postal code
                 </FormLabel>
                 <OutlinedInput
-                    id="zip"
-                    name="zip"
-                    type="zip"
-                    placeholder="12345"
+                    id="postalCode"
+                    name="postalCode"
+                    type="postalCode"
+                    placeholder="91-474"
+                    value={addressDetails.postalCode}
+                    onChange={handleChange}
+                    error={!!errorForm.postalCode}
                     autoComplete="shipping postal-code"
                     required
                 />
+                {!!errorForm.postalCode && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.postalCode}
+                    </FormHelperText>
+                )}
             </FormGrid>
             <FormGrid item xs={6}>
-                <FormLabel htmlFor="country" required>
-                    Country
+                <FormLabel htmlFor="houseNumber" required>
+                    House Number
                 </FormLabel>
                 <OutlinedInput
-                    id="country"
-                    name="country"
-                    type="country"
-                    placeholder="United States"
-                    autoComplete="shipping country"
+                    id="houseNumber"
+                    name="houseNumber"
+                    type="houseNumber"
+                    placeholder="House Number"
+                    value={addressDetails.houseNumber}
+                    onChange={handleChange}
+                    error={!!errorForm.houseNumber}
                     required
                 />
+                {!!errorForm.houseNumber && (
+                    <FormHelperText error id="accountId-error">
+                        {errorForm.houseNumber}
+                    </FormHelperText>
+                )}
             </FormGrid>
-            <FormGrid item xs={12}>
-                <FormControlLabel
-                    control={<Checkbox name="saveAddress" value="yes" />}
-                    label="Use this address for payment details"
-                />
+            <FormGrid item xs={6}>
+                <FormLabel htmlFor="service" required>
+                    Service
+                </FormLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={addressDetails.service}
+                    label="Age"
+                    onChange={(event: SelectChangeEvent) => {
+                        setAddressDetails((prevState) => ({
+                            ...prevState,
+                            service: event.target.value as string
+                        }))
+                    }}
+                >
+                    <MenuItem value={'INPOST'}>INPOST</MenuItem>
+                    <MenuItem value={'DPD'}>DPD</MenuItem>
+                </Select>
             </FormGrid>
         </Grid>
     )
